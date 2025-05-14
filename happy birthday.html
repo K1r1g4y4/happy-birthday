@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ulang Tahun Visual Novel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #ffe6f0, #ffcce0);
+      color: #333;
+    }
+    section {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 40px 20px;
+      background: #fff0f5;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      animation: fadein 0.5s ease-in-out;
+    }
+    .btn {
+      padding: 10px 20px;
+      background-color: #ff99cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      margin: 10px;
+    }
+    input, textarea {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+    }
+    .decor {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    const app = document.getElementById("app");
+    let state = 0;
+
+    const dialogVN = [
+      "📚 Cerita Singkat",
+      "Raka duduk di bawah pohon sambil menunggu Miyo pulang sekolah...",
+      "Raka: \"Tumben lama, Miyo~\"",
+      "Miyo: \"Maaf ya, Rak... Tadi kelamaan beresin buku. Tapi kamu nungguin aku?\"",
+      "Raka: \"Iya dong, siapa lagi?\"",
+      "Mereka pun berjalan bareng keluar gerbang sekolah...",
+      "Miyo: \"Mau mampir ke perpus nggak? Aku ada PR MTK 😖\"",
+      "Raka: \"Boleh, sekalian bantuin kamu ya~\"",
+      "Di perpustakaan mereka duduk bersebelahan.",
+      "Miyo: \"Raka, ini kenapa ya x-nya bisa hilang?\"",
+      "Raka: \"Karena dia nyari perhatian kamu 😏\"",
+      "(Mereka tertawa...)"
+    ];
+
+    const pages = [
+      `<section>
+        <div class="decor">🎂💖🎈</div>
+        <h2>Happy Birthday My Pookie!</h2>
+        <p>Semoga dengan bertambahnya usiamu, semakin sempurna juga imanmu, rajin ibadahnya, selalu diberi kesehatan sama yang Mahakuasa, panjang umur, selalu bahagia, berbakti terus sama orangtua, serta segala doa dan cita-cita kamu bisa terwujud dan dimudahkan dalam segala urusan.</p>
+        <p>Yey, sekarang kamuu ulang tahun! Kamu semakin dewasa, harus lebih bijak, jangan pernah capek memperbaiki diri, yaa~</p>
+        <button class="btn" onclick="next()">Lanjut ke Cerita</button>
+      </section>`,
+      `<section id="vn"></section>`
+    ];
+
+    function next() {
+      state++;
+      if (state === 1) {
+        app.innerHTML = pages[state];
+        jalankanVN();
+      }
+    }
+
+    let dialogIndex = 0;
+    function jalankanVN() {
+      const vn = document.getElementById("vn");
+      vn.innerHTML = `<p>${dialogVN[dialogIndex]}</p><button class='btn' onclick='lanjutDialog()'>Lanjut</button>`;
+    }
+
+    function lanjutDialog() {
+      dialogIndex++;
+      const vn = document.getElementById("vn");
+      if (dialogIndex < dialogVN.length) {
+        vn.innerHTML = `<p>${dialogVN[dialogIndex]}</p><button class='btn' onclick='lanjutDialog()'>Lanjut</button>`;
+      } else {
+        tampilQuiz1();
+      }
+    }
+
+    function tampilQuiz1() {
+      app.innerHTML = `<section>
+        <h2>🧠 Mini Quiz!</h2>
+        <p><small>Ayo uji seberapa tahu kamu tentang abang~</small></p>
+        <p><strong>1. Siapa waifu abang?</strong></p>
+        <button class="btn" onclick="jawab1('Elaina')">a. Elaina</button>
+        <button class="btn" onclick="jawab1('Nakano Nino')">b. Nakano Nino</button>
+        <button class="btn" onclick="jawab1('Zero Two')">c. Zero Two</button>
+        <button class="btn" onclick="jawab1('Mao Mao')">d. Mao Mao</button>
+      </section>`;
+    }
+
+    function jawab1(jawab) {
+      let response = "";
+      if (jawab === "Elaina") response = "Sebenarnya Mao Mao juga waifu abg 🤭";
+      else if (jawab === "Mao Mao") response = "Sebenarnya Elaina juga waifu abg 🤭";
+      else response = "Masa kamu gatau sih😔";
+
+      app.innerHTML = `<section>
+        <h2>Hasil Jawaban 1</h2>
+        <p>${response}</p>
+        <button class="btn" onclick="tampilQuiz2()">Lanjut</button>
+      </section>`;
+    }
+
+    function tampilQuiz2() {
+      app.innerHTML = `<section>
+        <h2>2. Berapa tinggi abang hayooo</h2>
+        <button class="btn" onclick="jawab2('165 cm')">a. 165 cm</button>
+        <button class="btn" onclick="jawab2('175 cm')">b. 175 cm</button>
+        <button class="btn" onclick="jawab2('170 cm')">c. 170 cm</button>
+        <button class="btn" onclick="jawab2('5 meter😱')">d. 5 meter😱</button>
+      </section>`;
+    }
+
+    function jawab2(jawab) {
+      let response = (jawab === "170 cm") ? "Yey kamu benar!! 🌹" : "Masa salah sih?😔";
+      app.innerHTML = `<section>
+        <h2>Hasil Jawaban 2</h2>
+        <p>${response}</p>
+        <button class="btn" onclick="tampilQuiz3()">Lanjut</button>
+      </section>`;
+    }
+
+    function tampilQuiz3() {
+      app.innerHTML = `<section>
+        <h2>3. Kasane Teto atau Hatsune Miku?</h2>
+        <p>Abang lebih suka siapa hayooo?</p>
+        <button class="btn" onclick="jawab3Output()">a. Hatsune Miku</button>
+        <button class="btn" onclick="jawab3Output()">b. Kasane Teto</button>
+      </section>`;
+    }
+
+    function jawab3Output() {
+      app.innerHTML = `<section>
+        <p>Sebenarnya lebih suka kamu sih 🤭</p>
+        <button class="btn" onclick="tampilHarapan()">Lanjut</button>
+      </section>`;
+    }
+
+    function tampilHarapan() {
+      app.innerHTML = `<section>
+        <h2>💌 Harapan untuk Ulang Tahun</h2>
+        <p>Cukup kali ya tebak-tebakannya, sekarang coba tulis harapan kamu~</p>
+        <textarea id="harapan" rows="4" placeholder="Tulis harapan kamu di sini..."></textarea><br>
+        <button class="btn" onclick="submitHarapan()">Kirim</button>
+      </section>`;
+    }
+
+    function submitHarapan() {
+      const val = document.getElementById("harapan").value.trim();
+      if (!val) return;
+
+      fetch("/https://script.google.com/macros/s/AKfycbyP5UcxelLpEb0Erz1XnuFeCWWUYPkBuUkt5oWYDuKtLnPFYiYY6OG-2PEe2_4rLsvHMQ/exec", {
+        method: "POST",
+        body: JSON.stringify({ harapan: val }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(() => {
+        app.innerHTML = `<section>
+          <h2>💖 Terima kasih!</h2>
+          <p>Harapan kamu sudah terkirim ya~</p>
+          <a class="btn" href="https://docs.google.com/spreadsheets/d/1bNeeEKTPpTMS1lD_Pml1SdK_H5dnvhDdt2vpLJF8Ti4" target="_blank">Lihat Semua Harapan</a>
+          <button class="btn" onclick="window.location.reload()">Ulang dari awal</button>
+        </section>`;
+      }).catch(() => {
+        alert("Gagal mengirim harapan. Coba lagi nanti.");
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      app.innerHTML = pages[0];
+    });
+  </script>
+</body>
+</html>
+
